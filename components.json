@@ -5,13 +5,11 @@
   "tsx": true,
   "tailwind": {
     "config": "",
-    "css": "src/index.css",
+    "css": "src/styles.css",
     "baseColor": "stone",
     "cssVariables": true,
     "prefix": ""
   },
-  "iconLibrary": "lucide",
-  "rtl": true,
   "aliases": {
     "components": "@/components",
     "utils": "@/lib/utils",
@@ -19,6 +17,8 @@
     "lib": "@/lib",
     "hooks": "@/hooks"
   },
+  "iconLibrary": "lucide",
+  "rtl": true,
   "menuColor": "default-translucent",
   "menuAccent": "subtle",
   "registries": {}
