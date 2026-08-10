@@ -25,7 +25,6 @@ const navItems = [
   { to: '/odds', label: 'Odds' },
   { to: '/leagues', label: 'Leagues' },
   { to: '/teams', label: 'Teams' },
-  { to: '/people', label: 'People' },
   { to: '/acca', label: 'Acca' },
 ] as const
 

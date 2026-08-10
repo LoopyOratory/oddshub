@@ -18,7 +18,6 @@ import { Route as LeaguesLeagueIdRouteImport } from './routes/leagues.$leagueId'
 import { Route as MatchesIndexRouteImport } from './routes/matches.index'
 import { Route as MatchesEventIdRouteImport } from './routes/matches.$eventId'
 import { Route as OddsIndexRouteImport } from './routes/odds.index'
-import { Route as PeopleIndexRouteImport } from './routes/people.index'
 import { Route as PlayersPlayerIdRouteImport } from './routes/players.$playerId'
 import { Route as PredictionsIndexRouteImport } from './routes/predictions.index'
 import { Route as TeamsIndexRouteImport } from './routes/teams.index'
@@ -69,11 +68,6 @@ const OddsIndexRoute = OddsIndexRouteImport.update({
   path: '/odds/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const PeopleIndexRoute = PeopleIndexRouteImport.update({
-  id: '/people/',
-  path: '/people/',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const PlayersPlayerIdRoute = PlayersPlayerIdRouteImport.update({
   id: '/players/$playerId',
   path: '/players/$playerId',
@@ -107,7 +101,6 @@ export interface FileRoutesByFullPath {
   '/leagues/': typeof LeaguesIndexRoute
   '/matches/': typeof MatchesIndexRoute
   '/odds/': typeof OddsIndexRoute
-  '/people/': typeof PeopleIndexRoute
   '/predictions/': typeof PredictionsIndexRoute
   '/teams/': typeof TeamsIndexRoute
 }
@@ -123,7 +116,6 @@ export interface FileRoutesByTo {
   '/leagues': typeof LeaguesIndexRoute
   '/matches': typeof MatchesIndexRoute
   '/odds': typeof OddsIndexRoute
-  '/people': typeof PeopleIndexRoute
   '/predictions': typeof PredictionsIndexRoute
   '/teams': typeof TeamsIndexRoute
 }
@@ -140,7 +132,6 @@ export interface FileRoutesById {
   '/leagues/': typeof LeaguesIndexRoute
   '/matches/': typeof MatchesIndexRoute
   '/odds/': typeof OddsIndexRoute
-  '/people/': typeof PeopleIndexRoute
   '/predictions/': typeof PredictionsIndexRoute
   '/teams/': typeof TeamsIndexRoute
 }
@@ -158,7 +149,6 @@ export interface FileRouteTypes {
     | '/leagues/'
     | '/matches/'
     | '/odds/'
-    | '/people/'
     | '/predictions/'
     | '/teams/'
   fileRoutesByTo: FileRoutesByTo
@@ -174,7 +164,6 @@ export interface FileRouteTypes {
     | '/leagues'
     | '/matches'
     | '/odds'
-    | '/people'
     | '/predictions'
     | '/teams'
   id:
@@ -190,7 +179,6 @@ export interface FileRouteTypes {
     | '/leagues/'
     | '/matches/'
     | '/odds/'
-    | '/people/'
     | '/predictions/'
     | '/teams/'
   fileRoutesById: FileRoutesById
@@ -207,7 +195,6 @@ export interface RootRouteChildren {
   LeaguesIndexRoute: typeof LeaguesIndexRoute
   MatchesIndexRoute: typeof MatchesIndexRoute
   OddsIndexRoute: typeof OddsIndexRoute
-  PeopleIndexRoute: typeof PeopleIndexRoute
   PredictionsIndexRoute: typeof PredictionsIndexRoute
   TeamsIndexRoute: typeof TeamsIndexRoute
 }
@@ -277,13 +264,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OddsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/people/': {
-      id: '/people/'
-      path: '/people'
-      fullPath: '/people/'
-      preLoaderRoute: typeof PeopleIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/players/$playerId': {
       id: '/players/$playerId'
       path: '/players/$playerId'
@@ -327,7 +307,6 @@ const rootRouteChildren: RootRouteChildren = {
   LeaguesIndexRoute: LeaguesIndexRoute,
   MatchesIndexRoute: MatchesIndexRoute,
   OddsIndexRoute: OddsIndexRoute,
-  PeopleIndexRoute: PeopleIndexRoute,
   PredictionsIndexRoute: PredictionsIndexRoute,
   TeamsIndexRoute: TeamsIndexRoute,
 }

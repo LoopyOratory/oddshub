@@ -11,7 +11,6 @@ const staticPages = [
   { path: '/odds', priority: '0.8', freq: 'hourly' },
   { path: '/leagues', priority: '0.8', freq: 'daily' },
   { path: '/teams', priority: '0.7', freq: 'daily' },
-  { path: '/people', priority: '0.4', freq: 'weekly' },
   { path: '/acca', priority: '0.8', freq: 'monthly' },
 ]
 

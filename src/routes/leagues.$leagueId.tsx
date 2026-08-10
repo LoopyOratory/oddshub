@@ -50,14 +50,10 @@ function LeaguePage() {
             <CardTitle className="text-lg">Standings</CardTitle>
           </CardHeader>
           <CardContent className="p-0">
-            {standings.grouped ? (
-              <div className="space-y-6 p-4">
-                {standings.groups?.map((group) => (
-                  <StandingsTable key={group.name} title={group.name} rows={group.standings} />
-                ))}
-              </div>
-            ) : (
+            {standings.standings?.length ? (
               <StandingsTable rows={standings.standings} />
+            ) : (
+              <p className="p-4 text-sm text-muted-foreground">No standings data.</p>
             )}
           </CardContent>
         </Card>
