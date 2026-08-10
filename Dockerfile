@@ -1,11 +1,9 @@
-FROM node:20-alpine AS base
-RUN apk add --no-cache libc6-compat
+FROM oven/bun:1 AS base
 WORKDIR /app
 
 # Install dependencies
 FROM base AS deps
-COPY package.json bun.lockb* ./
-RUN corepack enable && corepack prepare bun@latest --activate
+COPY package.json bun.lock* ./
 RUN bun install --frozen-lockfile
 
 # Build
@@ -15,7 +13,7 @@ COPY . .
 RUN bun run build
 
 # Production
-FROM base AS runner
+FROM oven/bun:1 AS runner
 ENV NODE_ENV=production
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 appuser
@@ -28,4 +26,4 @@ EXPOSE 3000
 ENV PORT=3000
 ENV HOST=0.0.0.0
 
-CMD ["node", ".output/server/index.mjs"]
+CMD ["bun", "run", ".output/server/index.mjs"]
