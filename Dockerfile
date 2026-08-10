@@ -15,13 +15,10 @@ RUN bun run build
 # Production
 FROM oven/bun:1 AS runner
 ENV NODE_ENV=production
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 appuser
 
-COPY --from=builder --chown=appuser:nodejs /app/.output ./.output
+COPY --from=builder /app/.output ./.output
 COPY --from=builder /app/package.json ./package.json
 
-USER appuser
 EXPOSE 3000
 ENV PORT=3000
 ENV HOST=0.0.0.0
