@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button'
 import { listPredictions } from '@/lib/bsd.functions'
 import { toParams } from '@/lib/bsd'
 import { fmtDateTime } from '@/lib/format'
+import { PredictionCardInfographic } from '@/components/Infographic'
 
 export const Route = createFileRoute('/predictions/')({
   head: () => ({ meta: [{ title: 'Model predictions | OddsHub' }] }),
@@ -58,6 +59,20 @@ function Predictions() {
           </Button>
         </div>
       </div>
+
+      {/* Featured prediction infographic */}
+      {results.length > 0 && results[0].markets.match_result && (
+        <div className="rounded-xl border border-white/10 bg-gradient-to-br from-emerald-500/10 to-transparent p-4">
+          <h2 className="mb-3 text-sm font-medium text-muted-foreground">Featured prediction</h2>
+          <PredictionCardInfographic
+            match={`${results[0].event.home_team} vs ${results[0].event.away_team}`}
+            prediction={results[0].markets.match_result.predicted === 'H' ? results[0].event.home_team : results[0].markets.match_result.predicted === 'A' ? results[0].event.away_team : 'Draw'}
+            confidence={Math.round(results[0].model.confidence * 100)}
+            odds={2.5}
+            valueBet={results[0].recommendations.recommended === true}
+          />
+        </div>
+      )}
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {results.map((prediction) => {
