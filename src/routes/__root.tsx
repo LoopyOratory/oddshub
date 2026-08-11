@@ -1,3 +1,4 @@
+import { SearchBar } from '@/components/SearchBar'
 import React from 'react'
 import {
   HeadContent,
@@ -22,11 +23,10 @@ const navItems = [
   { to: '/', label: 'Home' },
   { to: '/predictions', label: 'Predictions' },
   { to: '/matches', label: 'Fixtures' },
-  { to: '/odds', label: 'Odds' },
   { to: '/leagues', label: 'Leagues' },
-  { to: '/teams', label: 'Teams' },
   { to: '/acca', label: 'Acca' },
 ] as const
+
 
 const SITE_URL = 'https://oddshub.example.com'
 const SITE_NAME = 'OddsHub'
@@ -99,51 +99,68 @@ function RootComponent() {
       </head>
       <body className="bg-background min-h-screen font-sans text-foreground antialiased">
         <QueryClientProvider client={queryClient}>
-          <header className="glass-header sticky top-0 z-40 flex items-center gap-4 border-b border-white/5 px-4 py-3 backdrop-blur-xl">
-            <Link to="/" className="mr-2 hidden font-heading text-lg font-bold sm:block">
-              <span className="text-emerald-400">Odds</span>
-              <span className="text-white">Hub</span>
-            </Link>
-            <nav className="hidden gap-1 overflow-x-auto md:flex">
-              {navItems.map(({ to, label }) => (
-                <Link
-                  key={to}
-                  to={to}
-                  activeOptions={{ exact: to === '/' }}
-                  activeProps={{ className: 'bg-emerald-500/15 text-emerald-400' }}
-                  className="whitespace-nowrap rounded-md px-2.5 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-                >
-                  {label}
-                </Link>
-              ))}
-            </nav>
-            {/* Mobile menu */}
-            <Button
-              variant="ghost"
-              size="icon"
-              className="md:hidden ml-auto"
-              onClick={() => setMobileOpen(!mobileOpen)}
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
-            </Button>
+          <header className="glass-header sticky top-0 z-40 border-b border-white/5 backdrop-blur-xl">
+            <div className="mx-auto flex max-w-6xl items-center gap-4 px-4 py-3">
+              {/* Logo */}
+              <Link to="/" className="shrink-0 font-heading text-lg font-bold">
+                <span className="text-emerald-400">Odds</span>
+                <span className="text-white">Hub</span>
+              </Link>
+
+              {/* Search bar - center on desktop */}
+              <div className="hidden flex-1 justify-center md:flex">
+                <SearchBar />
+              </div>
+
+              {/* Nav links - right side */}
+              <nav className="hidden shrink-0 gap-1 md:flex">
+                {navItems.map(({ to, label }) => (
+                  <Link
+                    key={to}
+                    to={to}
+                    activeOptions={{ exact: to === '/' }}
+                    activeProps={{ className: 'bg-emerald-500/15 text-emerald-400' }}
+                    className="whitespace-nowrap rounded-md px-2.5 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+                  >
+                    {label}
+                  </Link>
+                ))}
+              </nav>
+
+              {/* Mobile menu button */}
+              <Button
+                variant="ghost"
+                size="icon"
+                className="md:hidden ml-auto"
+                onClick={() => setMobileOpen(!mobileOpen)}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+              </Button>
+            </div>
+
+            {/* Mobile search + nav */}
+            {mobileOpen && (
+              <div className="border-t md:hidden">
+                <div className="p-3">
+                  <SearchBar />
+                </div>
+                <nav className="border-t px-4 py-2">
+                  {navItems.map(({ to, label }) => (
+                    <Link
+                      key={to}
+                      to={to}
+                      activeOptions={{ exact: to === '/' }}
+                      activeProps={{ className: 'bg-emerald-500/15 text-emerald-400' }}
+                      onClick={() => setMobileOpen(false)}
+                      className="block rounded-md px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground"
+                    >
+                      {label}
+                    </Link>
+                  ))}
+                </nav>
+              </div>
+            )}
           </header>
-          {/* Mobile nav dropdown */}
-          {mobileOpen && (
-            <nav className="md:hidden border-b bg-card px-4 py-2">
-              {navItems.map(({ to, label }) => (
-                <Link
-                  key={to}
-                  to={to}
-                  activeOptions={{ exact: to === '/' }}
-                  activeProps={{ className: 'bg-emerald-500/15 text-emerald-400' }}
-                  onClick={() => setMobileOpen(false)}
-                  className="block rounded-md px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground"
-                >
-                  {label}
-                </Link>
-              ))}
-            </nav>
-          )}
           <main className="mx-auto max-w-6xl px-4 py-6">
             <Outlet />
           </main>

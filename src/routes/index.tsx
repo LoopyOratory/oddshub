@@ -281,7 +281,7 @@ function Home() {
         <ExploreCard
           title="Odds comparison"
           description="Bookmaker-by-bookmaker price comparison with movement and payout."
-          href="/odds"
+          href="/matches"
         />
         <ExploreCard
           title="Fixtures & results"
@@ -382,7 +382,7 @@ function ExploreCard({
 }: {
   title: string
   description: string
-  href: '/predictions' | '/odds' | '/matches' | '/acca'
+  href: '/predictions' | '/matches' | '/acca'
 }) {
   return (
     <Link

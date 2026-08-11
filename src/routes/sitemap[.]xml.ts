@@ -8,10 +8,9 @@ const staticPages = [
   { path: '/', priority: '1.0', freq: 'hourly' },
   { path: '/predictions', priority: '0.9', freq: 'hourly' },
   { path: '/matches', priority: '0.9', freq: 'hourly' },
-  { path: '/odds', priority: '0.8', freq: 'hourly' },
-  { path: '/leagues', priority: '0.8', freq: 'daily' },
-  { path: '/teams', priority: '0.7', freq: 'daily' },
-  { path: '/acca', priority: '0.8', freq: 'monthly' },
+    { path: '/leagues', priority: '0.8', freq: 'daily' },
+    { path: '/acca', priority: '0.8', freq: 'monthly' },
+  { path: '/acca/public', priority: '0.7', freq: 'daily' },
 ]
 
 export const Route = createFileRoute('/sitemap.xml')({
