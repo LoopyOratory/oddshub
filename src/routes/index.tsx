@@ -1,3 +1,4 @@
+import { TopAccas } from '@/components/PublicAcca'
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { useSuspenseQuery, queryOptions } from '@tanstack/react-query'
 import type { QueryClient } from '@tanstack/react-query'
@@ -269,6 +270,12 @@ function Home() {
         {!fixturesData.results.length && (
           <p className="text-sm text-muted-foreground">No fixtures scheduled for today.</p>
         )}
+      </section>
+
+      {/* Top public accas */}
+      <section className="space-y-3">
+        <h2 className="text-xl font-bold">Community Accumulators</h2>
+        <TopAccas period="week" />
       </section>
 
       {/* Explore */}

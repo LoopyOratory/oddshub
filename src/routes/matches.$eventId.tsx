@@ -18,6 +18,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import { VoteButtons } from '@/components/VoteButtons'
 import { eventBroadcasts,
   eventDetail,
   eventH2h,
@@ -123,6 +124,13 @@ function MatchPage() {
           </Link>
         </div>
       </header>
+
+      {/* Community voting */}
+      <Card>
+        <CardContent className="p-4">
+          <VoteButtons eventId={detail.id} />
+        </CardContent>
+      </Card>
 
       <Tabs value={tab} onValueChange={setTab} className="w-full">
         <TabsList className="flex-wrap">
