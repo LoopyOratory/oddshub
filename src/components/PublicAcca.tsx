@@ -65,7 +65,7 @@ export function PublishAccaButton({
         <Badge variant="outline" className="font-mono">
           {publishedCode}
         </Badge>
-        <Link to="/acca/$code" params={{ code: publishedCode }}>
+        <Link to="/predictions/$code" params={{ code: publishedCode }}>
           <Button size="sm" variant="outline">
             View Public
           </Button>
@@ -157,7 +157,7 @@ export function PublicAccaCard({ acca }: { acca: PublicAcca }) {
             <Button size="sm" onClick={handleCopy} disabled={copied}>
               {copied ? '✓ Copied' : 'Copy'}
             </Button>
-            <Link to="/acca/$code" params={{ code: acca.code }}>
+            <Link to="/predictions/$code" params={{ code: acca.code }}>
               <Button size="sm" variant="outline" className="w-full">
                 View
               </Button>
@@ -204,7 +204,7 @@ export function TopAccas({ period = 'week' }: { period?: 'day' | 'week' | 'month
             <div className="flex items-center gap-2">
               <span className="text-muted-foreground">#{i + 1}</span>
               <Link
-                to="/acca/$code"
+                to="/predictions/$code"
                 params={{ code: acca.code }}
                 className="font-mono text-xs hover:text-emerald-300"
               >

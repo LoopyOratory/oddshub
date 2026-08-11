@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { combinedOdds, potentialReturn, selectionKey } from '@/lib/acca'
 import type { AccaSelection } from '@/lib/acca'
+import { publishAcca } from '@/lib/features.functions'
 import { Button } from '@/components/ui/button'
 
 function getSelectionsFromURL(): AccaSelection[] {
@@ -63,11 +64,33 @@ export function AccaWidget() {
   }
 
   const shareAcca = async () => {
-    const url = new URL(window.location.href)
-    url.searchParams.set('acca', JSON.stringify(selections))
-    await navigator.clipboard.writeText(url.toString())
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
+    // Publish the slip and share a link to its /predictions/<code> page
+    try {
+      const totalOdds = combinedOdds(selections)
+      const stake = selections.reduce((sum, s) => sum + s.stake, 0)
+      const result = await publishAcca({
+        data: {
+          userName: 'Anonymous',
+          selections,
+          totalOdds,
+          stake,
+          potentialReturn: stake * totalOdds,
+        },
+      })
+      if (result.success && result.code) {
+        const shareUrl = `${window.location.origin}/predictions/${result.code}`
+        await navigator.clipboard.writeText(shareUrl)
+        setCopied(true)
+        setTimeout(() => setCopied(false), 2000)
+      }
+    } catch {
+      // fallback: copy raw acca payload instead
+      const url = new URL(window.location.href)
+      url.searchParams.set('acca', JSON.stringify(selections))
+      await navigator.clipboard.writeText(url.toString())
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    }
   }
 
   if (!selections.length) return null

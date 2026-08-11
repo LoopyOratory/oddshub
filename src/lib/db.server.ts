@@ -112,8 +112,10 @@ export function createAccumulator(
 }
 
 export function getAccumulator(code: string) {
+  // Slip pages live for 7 days, then expire automatically
   const stmt = db.prepare(`
-    SELECT * FROM public_accumulators WHERE code = ?
+    SELECT * FROM public_accumulators
+    WHERE code = ? AND created_at >= datetime('now', '-7 days')
   `)
   const row = stmt.get(code) as Record<string, unknown> | undefined
   if (row) {
@@ -128,7 +130,7 @@ export function listPublicAccas(limit = 20, offset = 0) {
   const stmt = db.prepare(`
     SELECT id, code, user_name, total_odds, stake, potential_return, status, views, copies, created_at
     FROM public_accumulators
-    WHERE status = 'pending'
+    WHERE status = 'pending' AND created_at >= datetime('now', '-7 days')
     ORDER BY created_at DESC
     LIMIT ? OFFSET ?
   `)
@@ -147,6 +149,15 @@ export function getTopAccas(period: 'day' | 'week' | 'month' = 'week', limit = 1
   return stmt.all(`-${interval}`, limit)
 }
 
+// Cleanup: delete slip pages older than 7 days (called on server startup)
+export function cleanupExpiredAccas(): number {
+  const stmt = db.prepare(`
+    DELETE FROM public_accumulators
+    WHERE created_at < datetime('now', '-7 days')
+  `)
+  return stmt.run().changes
+}
+
 export function copyAccumulator(code: string): boolean {
   const stmt = db.prepare(`
     UPDATE public_accumulators SET copies = copies + 1 WHERE code = ?
@@ -162,6 +173,13 @@ export function generateAccaCode(): string {
     code += chars.charAt(Math.floor(Math.random() * chars.length))
   }
   return code
+}
+
+// Expire slip pages older than 7 days on server startup
+try {
+  cleanupExpiredAccas()
+} catch {
+  // table may not exist on first boot before migrations run — ignore
 }
 
 export { db }
