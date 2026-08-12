@@ -1,11 +1,13 @@
 import { Database } from 'bun:sqlite'
 import { join } from 'path'
 
-const DB_PATH = join(import.meta.dir, '../../data/oddshub.sqlite')
+// Use cwd-based path: dev server, Nitro prod output, and Docker all run from the
+// project/app root. (import.meta.dir is undefined under Vite's SSR transform.)
+const DB_PATH = join(process.cwd(), 'data/oddshub.sqlite')
 
 // Ensure data directory exists
 import { mkdirSync } from 'fs'
-mkdirSync(join(import.meta.dir, '../../data'), { recursive: true })
+mkdirSync(join(process.cwd(), 'data'), { recursive: true })
 
 const db = new Database(DB_PATH)
 
@@ -173,13 +175,6 @@ export function generateAccaCode(): string {
     code += chars.charAt(Math.floor(Math.random() * chars.length))
   }
   return code
-}
-
-// Expire slip pages older than 7 days on server startup
-try {
-  cleanupExpiredAccas()
-} catch {
-  // table may not exist on first boot before migrations run — ignore
 }
 
 export { db }

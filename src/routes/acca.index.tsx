@@ -17,7 +17,7 @@ interface AccaLeg {
   void: boolean
 }
 
-export const Route = createFileRoute('/acca')({
+export const Route = createFileRoute('/acca/')({
   component: AccaBuilder,
 })
 

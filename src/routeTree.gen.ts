@@ -10,9 +10,9 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as AccaRouteImport } from './routes/acca'
 import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as AccaIndexRouteImport } from './routes/acca.index'
 import { Route as AccaPublicRouteImport } from './routes/acca.public'
 import { Route as LeaguesIndexRouteImport } from './routes/leagues.index'
 import { Route as LeaguesLeagueIdRouteImport } from './routes/leagues.$leagueId'
@@ -28,11 +28,6 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AccaRoute = AccaRouteImport.update({
-  id: '/acca',
-  path: '/acca',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const RobotsDottxtRoute = RobotsDottxtRouteImport.update({
   id: '/robots.txt',
   path: '/robots.txt',
@@ -43,10 +38,15 @@ const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AccaIndexRoute = AccaIndexRouteImport.update({
+  id: '/acca/',
+  path: '/acca/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AccaPublicRoute = AccaPublicRouteImport.update({
-  id: '/public',
-  path: '/public',
-  getParentRoute: () => AccaRoute,
+  id: '/acca/public',
+  path: '/acca/public',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const LeaguesIndexRoute = LeaguesIndexRouteImport.update({
   id: '/leagues/',
@@ -91,7 +91,6 @@ const TeamsTeamIdRoute = TeamsTeamIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/acca': typeof AccaRouteWithChildren
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/acca/public': typeof AccaPublicRoute
@@ -100,13 +99,13 @@ export interface FileRoutesByFullPath {
   '/players/$playerId': typeof PlayersPlayerIdRoute
   '/predictions/$code': typeof PredictionsCodeRoute
   '/teams/$teamId': typeof TeamsTeamIdRoute
+  '/acca/': typeof AccaIndexRoute
   '/leagues/': typeof LeaguesIndexRoute
   '/matches/': typeof MatchesIndexRoute
   '/predictions/': typeof PredictionsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/acca': typeof AccaRouteWithChildren
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/acca/public': typeof AccaPublicRoute
@@ -115,6 +114,7 @@ export interface FileRoutesByTo {
   '/players/$playerId': typeof PlayersPlayerIdRoute
   '/predictions/$code': typeof PredictionsCodeRoute
   '/teams/$teamId': typeof TeamsTeamIdRoute
+  '/acca': typeof AccaIndexRoute
   '/leagues': typeof LeaguesIndexRoute
   '/matches': typeof MatchesIndexRoute
   '/predictions': typeof PredictionsIndexRoute
@@ -122,7 +122,6 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/acca': typeof AccaRouteWithChildren
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/acca/public': typeof AccaPublicRoute
@@ -131,6 +130,7 @@ export interface FileRoutesById {
   '/players/$playerId': typeof PlayersPlayerIdRoute
   '/predictions/$code': typeof PredictionsCodeRoute
   '/teams/$teamId': typeof TeamsTeamIdRoute
+  '/acca/': typeof AccaIndexRoute
   '/leagues/': typeof LeaguesIndexRoute
   '/matches/': typeof MatchesIndexRoute
   '/predictions/': typeof PredictionsIndexRoute
@@ -139,7 +139,6 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/acca'
     | '/robots.txt'
     | '/sitemap.xml'
     | '/acca/public'
@@ -148,13 +147,13 @@ export interface FileRouteTypes {
     | '/players/$playerId'
     | '/predictions/$code'
     | '/teams/$teamId'
+    | '/acca/'
     | '/leagues/'
     | '/matches/'
     | '/predictions/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/acca'
     | '/robots.txt'
     | '/sitemap.xml'
     | '/acca/public'
@@ -163,13 +162,13 @@ export interface FileRouteTypes {
     | '/players/$playerId'
     | '/predictions/$code'
     | '/teams/$teamId'
+    | '/acca'
     | '/leagues'
     | '/matches'
     | '/predictions'
   id:
     | '__root__'
     | '/'
-    | '/acca'
     | '/robots.txt'
     | '/sitemap.xml'
     | '/acca/public'
@@ -178,6 +177,7 @@ export interface FileRouteTypes {
     | '/players/$playerId'
     | '/predictions/$code'
     | '/teams/$teamId'
+    | '/acca/'
     | '/leagues/'
     | '/matches/'
     | '/predictions/'
@@ -185,14 +185,15 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AccaRoute: typeof AccaRouteWithChildren
   RobotsDottxtRoute: typeof RobotsDottxtRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  AccaPublicRoute: typeof AccaPublicRoute
   LeaguesLeagueIdRoute: typeof LeaguesLeagueIdRoute
   MatchesEventIdRoute: typeof MatchesEventIdRoute
   PlayersPlayerIdRoute: typeof PlayersPlayerIdRoute
   PredictionsCodeRoute: typeof PredictionsCodeRoute
   TeamsTeamIdRoute: typeof TeamsTeamIdRoute
+  AccaIndexRoute: typeof AccaIndexRoute
   LeaguesIndexRoute: typeof LeaguesIndexRoute
   MatchesIndexRoute: typeof MatchesIndexRoute
   PredictionsIndexRoute: typeof PredictionsIndexRoute
@@ -205,13 +206,6 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/acca': {
-      id: '/acca'
-      path: '/acca'
-      fullPath: '/acca'
-      preLoaderRoute: typeof AccaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/robots.txt': {
@@ -228,12 +222,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/acca/': {
+      id: '/acca/'
+      path: '/acca'
+      fullPath: '/acca/'
+      preLoaderRoute: typeof AccaIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/acca/public': {
       id: '/acca/public'
-      path: '/public'
+      path: '/acca/public'
       fullPath: '/acca/public'
       preLoaderRoute: typeof AccaPublicRouteImport
-      parentRoute: typeof AccaRoute
+      parentRoute: typeof rootRouteImport
     }
     '/leagues/': {
       id: '/leagues/'
@@ -294,26 +295,17 @@ declare module '@tanstack/react-router' {
   }
 }
 
-interface AccaRouteChildren {
-  AccaPublicRoute: typeof AccaPublicRoute
-}
-
-const AccaRouteChildren: AccaRouteChildren = {
-  AccaPublicRoute: AccaPublicRoute,
-}
-
-const AccaRouteWithChildren = AccaRoute._addFileChildren(AccaRouteChildren)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AccaRoute: AccaRouteWithChildren,
   RobotsDottxtRoute: RobotsDottxtRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  AccaPublicRoute: AccaPublicRoute,
   LeaguesLeagueIdRoute: LeaguesLeagueIdRoute,
   MatchesEventIdRoute: MatchesEventIdRoute,
   PlayersPlayerIdRoute: PlayersPlayerIdRoute,
   PredictionsCodeRoute: PredictionsCodeRoute,
   TeamsTeamIdRoute: TeamsTeamIdRoute,
+  AccaIndexRoute: AccaIndexRoute,
   LeaguesIndexRoute: LeaguesIndexRoute,
   MatchesIndexRoute: MatchesIndexRoute,
   PredictionsIndexRoute: PredictionsIndexRoute,
